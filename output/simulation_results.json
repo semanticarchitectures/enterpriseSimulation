@@ -1,0 +1,109 @@
+{
+  "timeline": [
+    {
+      "event_type": "gate_completion",
+      "timestamp": 12.0,
+      "source_module": "authorization",
+      "payload": {
+        "gate_name": "title_10_authority",
+        "chain_id": "auth_chain_resupply"
+      }
+    },
+    {
+      "event_type": "gate_completion",
+      "timestamp": 20.0,
+      "source_module": "authorization",
+      "payload": {
+        "gate_name": "diplomatic_clearance",
+        "chain_id": "auth_chain_resupply"
+      }
+    },
+    {
+      "event_type": "gate_completion",
+      "timestamp": 24.0,
+      "source_module": "authorization",
+      "payload": {
+        "gate_name": "execute_order",
+        "chain_id": "auth_chain_resupply"
+      }
+    },
+    {
+      "event_type": "chain_completion",
+      "timestamp": 24.0,
+      "source_module": "authorization",
+      "payload": {
+        "chain_id": "auth_chain_resupply",
+        "elapsed_time": 24.0
+      }
+    },
+    {
+      "event_type": "fuel_consumed",
+      "timestamp": 220.0,
+      "source_module": "aerodynamics",
+      "payload": {
+        "leg_id": "al_udeid->waypoint_alpha",
+        "fuel_quantity": 6.9142857142857155
+      }
+    },
+    {
+      "event_type": "fuel_consumed",
+      "timestamp": 400.0,
+      "source_module": "aerodynamics",
+      "payload": {
+        "leg_id": "waypoint_alpha->drop_zone_bravo",
+        "fuel_quantity": 5.657142857142858
+      }
+    },
+    {
+      "event_type": "extraction_start",
+      "timestamp": 406.0,
+      "source_module": "airdrop",
+      "payload": {
+        "drop_zone_id": "drop_zone_bravo"
+      }
+    },
+    {
+      "event_type": "extraction_complete",
+      "timestamp": 418.0,
+      "source_module": "airdrop",
+      "payload": {
+        "drop_zone_id": "drop_zone_bravo",
+        "cargo_manifest": [
+          "pallet_mre_001",
+          "pallet_ammo_001",
+          "pallet_medical_001",
+          "pallet_comms_001"
+        ]
+      }
+    },
+    {
+      "event_type": "fuel_consumed",
+      "timestamp": 550.0,
+      "source_module": "aerodynamics",
+      "payload": {
+        "leg_id": "drop_zone_bravo->waypoint_charlie",
+        "fuel_quantity": 4.714285714285714
+      }
+    },
+    {
+      "event_type": "fuel_consumed",
+      "timestamp": 750.0,
+      "source_module": "aerodynamics",
+      "payload": {
+        "leg_id": "waypoint_charlie->bagram",
+        "fuel_quantity": 6.2857142857142865
+      }
+    }
+  ],
+  "metrics": {
+    "total_duration": 750.0,
+    "total_costs": 0.0,
+    "messages_sent": 0,
+    "messages_delivered": 0,
+    "messages_failed": 0,
+    "mean_delivery_time": 0.0,
+    "chain_completion_times": {
+      "auth_chain_resupply": 24.0
+    }
+  }
+}

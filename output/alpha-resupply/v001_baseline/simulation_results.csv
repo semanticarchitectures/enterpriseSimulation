@@ -1,0 +1,22 @@
+# Timeline
+event_type,timestamp,source_module,payload
+gate_completion,12.0,authorization,"{""gate_name"": ""title_10_authority"", ""chain_id"": ""auth_chain_resupply""}"
+gate_completion,20.0,authorization,"{""gate_name"": ""diplomatic_clearance"", ""chain_id"": ""auth_chain_resupply""}"
+gate_completion,24.0,authorization,"{""gate_name"": ""execute_order"", ""chain_id"": ""auth_chain_resupply""}"
+chain_completion,24.0,authorization,"{""chain_id"": ""auth_chain_resupply"", ""elapsed_time"": 24.0}"
+fuel_consumed,220.0,aerodynamics,"{""leg_id"": ""al_udeid->waypoint_alpha"", ""fuel_quantity"": 6.9142857142857155}"
+fuel_consumed,400.0,aerodynamics,"{""leg_id"": ""waypoint_alpha->drop_zone_bravo"", ""fuel_quantity"": 5.657142857142858}"
+extraction_start,406.0,airdrop,"{""drop_zone_id"": ""drop_zone_bravo""}"
+extraction_complete,418.0,airdrop,"{""drop_zone_id"": ""drop_zone_bravo"", ""cargo_manifest"": [""pallet_mre_001"", ""pallet_ammo_001"", ""pallet_medical_001"", ""pallet_comms_001""]}"
+fuel_consumed,550.0,aerodynamics,"{""leg_id"": ""drop_zone_bravo->waypoint_charlie"", ""fuel_quantity"": 4.714285714285714}"
+fuel_consumed,750.0,aerodynamics,"{""leg_id"": ""waypoint_charlie->bagram"", ""fuel_quantity"": 6.2857142857142865}"
+
+# Metrics
+metric,value
+total_duration,750.0
+total_costs,0.0
+messages_sent,0
+messages_delivered,0
+messages_failed,0
+mean_delivery_time,0.0
+chain_completion_times,"{""auth_chain_resupply"": 24.0}"

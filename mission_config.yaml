@@ -1,0 +1,163 @@
+mission_id: "mission-alpha-001"
+mission_name: "USAF C-17 Airdrop Resupply Mission"
+
+route_graph:
+  nodes:
+    - entity_id: "node_origin"
+      name: "al_udeid"
+      node_type: "base"
+      latitude: 25.117
+      longitude: 51.315
+      altitude_ft: 0.0
+    - entity_id: "node_wp1"
+      name: "waypoint_alpha"
+      node_type: "waypoint"
+      latitude: 28.5
+      longitude: 54.0
+      altitude_ft: 28000.0
+    - entity_id: "node_dz"
+      name: "drop_zone_bravo"
+      node_type: "drop_zone"
+      latitude: 31.2
+      longitude: 57.8
+      altitude_ft: 1000.0
+    - entity_id: "node_wp2"
+      name: "waypoint_charlie"
+      node_type: "waypoint"
+      latitude: 33.0
+      longitude: 60.0
+      altitude_ft: 28000.0
+    - entity_id: "node_dest"
+      name: "bagram"
+      node_type: "base"
+      latitude: 34.946
+      longitude: 69.265
+      altitude_ft: 0.0
+  edges:
+    - source: "al_udeid"
+      destination: "waypoint_alpha"
+      distance_nm: 220.0
+      airspace_classification: "controlled"
+    - source: "waypoint_alpha"
+      destination: "drop_zone_bravo"
+      distance_nm: 180.0
+      airspace_classification: "restricted"
+    - source: "drop_zone_bravo"
+      destination: "waypoint_charlie"
+      distance_nm: 150.0
+      airspace_classification: "restricted"
+    - source: "waypoint_charlie"
+      destination: "bagram"
+      distance_nm: 200.0
+      airspace_classification: "controlled"
+  origin: "al_udeid"
+  destination: "bagram"
+
+aircraft:
+  entity_id: "ac_c17_001"
+  aircraft_type: "C-17A Globemaster III"
+  lift_to_drag_ratio: 17.5
+  specific_fuel_consumption: 0.55
+  initial_fuel_weight: 80000.0
+  max_fuel_capacity: 100000.0
+
+authorization_chain:
+  chain_id: "auth_chain_resupply"
+  chain_type: "sequential"
+  gates:
+    - entity_id: "gate_title10"
+      gate_name: "title_10_authority"
+      duration: 12.0
+      timestamp: 0.0
+      start_time: 0.0
+    - entity_id: "gate_dipclear"
+      gate_name: "diplomatic_clearance"
+      duration: 8.0
+      timestamp: 0.0
+      start_time: 0.0
+    - entity_id: "gate_exord"
+      gate_name: "execute_order"
+      duration: 4.0
+      timestamp: 0.0
+      start_time: 0.0
+
+fiscal_parameters:
+  accounts:
+    - entity_id: "fa_ops"
+      account_id: "operations_fund"
+      initial_allocation: 2000000.0
+      current_balance: 2000000.0
+      warning_threshold_pct: 0.15
+  cost_per_flying_hour: 24000.0
+  cost_per_fuel_unit: 4.50
+
+c2_messages:
+  - entity_id: "msg_ato"
+    name: "ATO"
+    source_node: "al_udeid"
+    destination_node: "bagram"
+    priority: 1
+    transmission_latency: 3.0
+    classification: "SECRET"
+  - entity_id: "msg_airmove"
+    name: "AIRMOVE_REQUEST"
+    source_node: "al_udeid"
+    destination_node: "waypoint_alpha"
+    priority: 2
+    transmission_latency: 2.0
+  - entity_id: "msg_oprep"
+    name: "OPREP3"
+    source_node: "bagram"
+    destination_node: "al_udeid"
+    priority: 1
+    transmission_latency: 1.5
+    classification: "SECRET"
+
+cross_domain_gateway:
+  sanitization_latency: 5.0
+  enclaves:
+    - entity_id: "enc_sipr"
+      name: "SIPRNET"
+      classification_level: "SECRET"
+    - entity_id: "enc_centrixs"
+      name: "CENTRIXS"
+      classification_level: "SECRET"
+  routing_rules:
+    - source_enclave: "SIPRNET"
+      destination_enclave: "CENTRIXS"
+      permitted_classifications:
+        - "SECRET"
+    - source_enclave: "CENTRIXS"
+      destination_enclave: "SIPRNET"
+      permitted_classifications:
+        - "SECRET"
+
+airdrop_parameters:
+  extraction_speed: 130.0
+  drop_altitude_ft: 1100.0
+  cargo_weight_limit: 20000.0
+  phase_durations:
+    slowdown: 6.0
+    extraction: 12.0
+    acceleration: 5.0
+  cargo_manifest:
+    - item_id: "pallet_mre_001"
+      weight: 4500.0
+      description: "MRE Rations - 30 day supply"
+    - item_id: "pallet_ammo_001"
+      weight: 6000.0
+      description: "Small arms ammunition"
+    - item_id: "pallet_medical_001"
+      weight: 2200.0
+      description: "Field medical supplies"
+    - item_id: "pallet_comms_001"
+      weight: 1800.0
+      description: "Communications equipment"
+
+active_modules:
+  - "authorization"
+  - "fiscal"
+  - "c2_message"
+  - "cross_domain"
+  - "aerodynamics"
+  - "airdrop"

@@ -1,0 +1,234 @@
+mission_id: "mission-pacific-hadr-002"
+mission_name: "C-130J Humanitarian Airdrop - Northwest Luzon"
+
+# Route: Hickam AFB (Hawaii) → Midway refuel point → Wake Island waypoint →
+#         Andersen AFB (Guam, refuel) → transit point → NW Luzon drop zone → Clark Field
+# Total distance approximately 5,400 nm with in-air refueling at two points.
+# The drop zone coordinates are approximate (NW Luzon, exact location TBD in transit).
+
+route_graph:
+  nodes:
+    - entity_id: "node_hickam"
+      name: "hickam_afb"
+      node_type: "base"
+      latitude: 21.319
+      longitude: -157.924
+      altitude_ft: 0.0
+    - entity_id: "node_refuel_1"
+      name: "pacific_refuel_alpha"
+      node_type: "waypoint"
+      latitude: 25.0
+      longitude: -170.0
+      altitude_ft: 24000.0
+    - entity_id: "node_wake"
+      name: "wake_island_waypoint"
+      node_type: "waypoint"
+      latitude: 19.282
+      longitude: 166.647
+      altitude_ft: 26000.0
+    - entity_id: "node_andersen"
+      name: "andersen_afb_guam"
+      node_type: "waypoint"
+      latitude: 13.584
+      longitude: 144.924
+      altitude_ft: 26000.0
+    - entity_id: "node_transit"
+      name: "philippine_sea_transit"
+      node_type: "waypoint"
+      latitude: 16.5
+      longitude: 125.0
+      altitude_ft: 22000.0
+    - entity_id: "node_dz"
+      name: "nw_luzon_drop_zone"
+      node_type: "drop_zone"
+      latitude: 17.8
+      longitude: 120.5
+      altitude_ft: 800.0
+    - entity_id: "node_clark"
+      name: "clark_field"
+      node_type: "base"
+      latitude: 15.186
+      longitude: 120.560
+      altitude_ft: 0.0
+  edges:
+    - source: "hickam_afb"
+      destination: "pacific_refuel_alpha"
+      distance_nm: 900.0
+      airspace_classification: "oceanic"
+    - source: "pacific_refuel_alpha"
+      destination: "wake_island_waypoint"
+      distance_nm: 1200.0
+      airspace_classification: "oceanic"
+    - source: "wake_island_waypoint"
+      destination: "andersen_afb_guam"
+      distance_nm: 1400.0
+      airspace_classification: "oceanic"
+    - source: "andersen_afb_guam"
+      destination: "philippine_sea_transit"
+      distance_nm: 1100.0
+      airspace_classification: "oceanic"
+    - source: "philippine_sea_transit"
+      destination: "nw_luzon_drop_zone"
+      distance_nm: 300.0
+      airspace_classification: "controlled"
+    - source: "nw_luzon_drop_zone"
+      destination: "clark_field"
+      distance_nm: 180.0
+      airspace_classification: "controlled"
+  origin: "hickam_afb"
+  destination: "clark_field"
+
+# C-130J Super Hercules — standard HADR configuration
+# In-air refueling extends effective range; initial fuel reflects post-refuel state
+# at Pacific refuel point. The model treats fuel as starting at max capacity to
+# represent refueling availability en route.
+aircraft:
+  entity_id: "ac_c130j_001"
+  aircraft_type: "C-130J Super Hercules"
+  lift_to_drag_ratio: 14.0
+  specific_fuel_consumption: 0.65
+  initial_fuel_weight: 35000.0
+  max_fuel_capacity: 36000.0
+
+# Authorization chain:
+# 1. PACOM Commander approval (Title 10 authority for HADR)
+# 2. Philippine government overflight/drop clearance
+# 3. HADR execute order from INDOPACOM
+# 4. Navy/Coast Guard SAR coordination acknowledgment
+authorization_chain:
+  chain_id: "auth_chain_hadr_luzon"
+  chain_type: "sequential"
+  gates:
+    - entity_id: "gate_pacom"
+      gate_name: "pacom_title10_hadr"
+      duration: 6.0
+      timeout: 48.0
+      timestamp: 0.0
+      start_time: 0.0
+    - entity_id: "gate_phil_clearance"
+      gate_name: "philippine_overflight_clearance"
+      duration: 10.0
+      timeout: 72.0
+      timestamp: 0.0
+      start_time: 0.0
+    - entity_id: "gate_indopacom_exord"
+      gate_name: "indopacom_hadr_execute_order"
+      duration: 4.0
+      timeout: 24.0
+      timestamp: 0.0
+      start_time: 0.0
+    - entity_id: "gate_sar_coord"
+      gate_name: "navy_coastguard_sar_coordination"
+      duration: 8.0
+      timeout: 36.0
+      timestamp: 0.0
+      start_time: 0.0
+
+# Fiscal: HADR operations fund with cost tracking
+fiscal_parameters:
+  accounts:
+    - entity_id: "fa_hadr"
+      account_id: "hadr_operations_fund"
+      initial_allocation: 3500000.0
+      current_balance: 3500000.0
+      warning_threshold_pct: 0.20
+  cost_per_flying_hour: 18000.0
+  cost_per_fuel_unit: 5.25
+
+# C2 Messages:
+# - TASKORD from INDOPACOM to Hickam (mission tasking)
+# - AIRMOVE from Hickam to PACAF (flight plan coordination)
+# - SAR_ALERT to Navy/Coast Guard (search and rescue notification)
+# - DROP_ZONE_UPDATE (in-transit update with exact DZ coordinates)
+# - OPREP3 from Clark to INDOPACOM (mission complete report)
+c2_messages:
+  - entity_id: "msg_taskord"
+    name: "TASKORD_HADR"
+    source_node: "hickam_afb"
+    destination_node: "clark_field"
+    priority: 1
+    transmission_latency: 2.5
+    classification: "SECRET"
+  - entity_id: "msg_airmove"
+    name: "AIRMOVE_PACIFIC"
+    source_node: "hickam_afb"
+    destination_node: "andersen_afb_guam"
+    priority: 2
+    transmission_latency: 1.5
+  - entity_id: "msg_sar_alert"
+    name: "SAR_COORDINATION_ALERT"
+    source_node: "hickam_afb"
+    destination_node: "wake_island_waypoint"
+    priority: 1
+    transmission_latency: 3.0
+    classification: "SECRET"
+  - entity_id: "msg_dz_update"
+    name: "DROP_ZONE_COORDINATE_UPDATE"
+    source_node: "andersen_afb_guam"
+    destination_node: "philippine_sea_transit"
+    priority: 1
+    transmission_latency: 2.0
+  - entity_id: "msg_oprep"
+    name: "OPREP3_MISSION_COMPLETE"
+    source_node: "clark_field"
+    destination_node: "hickam_afb"
+    priority: 1
+    transmission_latency: 2.0
+    classification: "SECRET"
+
+# Cross-domain gateway: SIPRNET (US classified) ↔ CENTRIXS (coalition/ally)
+# Philippine coordination messages may traverse the gateway
+cross_domain_gateway:
+  sanitization_latency: 4.0
+  enclaves:
+    - entity_id: "enc_sipr"
+      name: "SIPRNET"
+      classification_level: "SECRET"
+    - entity_id: "enc_centrixs"
+      name: "CENTRIXS_PACIFIC"
+      classification_level: "SECRET"
+  routing_rules:
+    - source_enclave: "SIPRNET"
+      destination_enclave: "CENTRIXS_PACIFIC"
+      permitted_classifications:
+        - "SECRET"
+    - source_enclave: "CENTRIXS_PACIFIC"
+      destination_enclave: "SIPRNET"
+      permitted_classifications:
+        - "SECRET"
+
+# Airdrop: Humanitarian supplies for disaster relief
+# Total cargo: 12,800 lbs (well under C-130J CDS limit of ~42,000 lbs)
+# Drop at 800 ft AGL, extraction speed 130 KIAS
+airdrop_parameters:
+  extraction_speed: 130.0
+  drop_altitude_ft: 800.0
+  cargo_weight_limit: 42000.0
+  phase_durations:
+    slowdown: 8.0
+    extraction: 15.0
+    acceleration: 6.0
+  cargo_manifest:
+    - item_id: "pallet_water_001"
+      weight: 4000.0
+      description: "Potable water - 2000 liters"
+    - item_id: "pallet_food_001"
+      weight: 3500.0
+      description: "Emergency food rations - 72hr supply for 500 persons"
+    - item_id: "pallet_medical_001"
+      weight: 2000.0
+      description: "Emergency medical supplies and first aid kits"
+    - item_id: "pallet_shelter_001"
+      weight: 2500.0
+      description: "Emergency shelter materials and tarps"
+    - item_id: "pallet_comms_001"
+      weight: 800.0
+      description: "Portable communications relay equipment"
+
+active_modules:
+  - "authorization"
+  - "fiscal"
+  - "c2_message"
+  - "cross_domain"
+  - "aerodynamics"
+  - "airdrop"

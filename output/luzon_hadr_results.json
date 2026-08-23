@@ -1,0 +1,137 @@
+{
+  "timeline": [
+    {
+      "event_type": "gate_completion",
+      "timestamp": 6.0,
+      "source_module": "authorization",
+      "payload": {
+        "gate_name": "pacom_title10_hadr",
+        "chain_id": "auth_chain_hadr_luzon"
+      }
+    },
+    {
+      "event_type": "gate_completion",
+      "timestamp": 16.0,
+      "source_module": "authorization",
+      "payload": {
+        "gate_name": "philippine_overflight_clearance",
+        "chain_id": "auth_chain_hadr_luzon"
+      }
+    },
+    {
+      "event_type": "gate_completion",
+      "timestamp": 20.0,
+      "source_module": "authorization",
+      "payload": {
+        "gate_name": "indopacom_hadr_execute_order",
+        "chain_id": "auth_chain_hadr_luzon"
+      }
+    },
+    {
+      "event_type": "gate_completion",
+      "timestamp": 28.0,
+      "source_module": "authorization",
+      "payload": {
+        "gate_name": "navy_coastguard_sar_coordination",
+        "chain_id": "auth_chain_hadr_luzon"
+      }
+    },
+    {
+      "event_type": "chain_completion",
+      "timestamp": 28.0,
+      "source_module": "authorization",
+      "payload": {
+        "chain_id": "auth_chain_hadr_luzon",
+        "elapsed_time": 28.0
+      }
+    },
+    {
+      "event_type": "fuel_consumed",
+      "timestamp": 900.0,
+      "source_module": "aerodynamics",
+      "payload": {
+        "leg_id": "hickam_afb->pacific_refuel_alpha",
+        "fuel_quantity": 41.785714285714285
+      }
+    },
+    {
+      "event_type": "fuel_consumed",
+      "timestamp": 2100.0,
+      "source_module": "aerodynamics",
+      "payload": {
+        "leg_id": "pacific_refuel_alpha->wake_island_waypoint",
+        "fuel_quantity": 55.714285714285715
+      }
+    },
+    {
+      "event_type": "fuel_consumed",
+      "timestamp": 3500.0,
+      "source_module": "aerodynamics",
+      "payload": {
+        "leg_id": "wake_island_waypoint->andersen_afb_guam",
+        "fuel_quantity": 65.0
+      }
+    },
+    {
+      "event_type": "fuel_consumed",
+      "timestamp": 4600.0,
+      "source_module": "aerodynamics",
+      "payload": {
+        "leg_id": "andersen_afb_guam->philippine_sea_transit",
+        "fuel_quantity": 51.07142857142857
+      }
+    },
+    {
+      "event_type": "fuel_consumed",
+      "timestamp": 4900.0,
+      "source_module": "aerodynamics",
+      "payload": {
+        "leg_id": "philippine_sea_transit->nw_luzon_drop_zone",
+        "fuel_quantity": 13.928571428571429
+      }
+    },
+    {
+      "event_type": "extraction_start",
+      "timestamp": 4908.0,
+      "source_module": "airdrop",
+      "payload": {
+        "drop_zone_id": "nw_luzon_drop_zone"
+      }
+    },
+    {
+      "event_type": "extraction_complete",
+      "timestamp": 4923.0,
+      "source_module": "airdrop",
+      "payload": {
+        "drop_zone_id": "nw_luzon_drop_zone",
+        "cargo_manifest": [
+          "pallet_water_001",
+          "pallet_food_001",
+          "pallet_medical_001",
+          "pallet_shelter_001",
+          "pallet_comms_001"
+        ]
+      }
+    },
+    {
+      "event_type": "fuel_consumed",
+      "timestamp": 5080.0,
+      "source_module": "aerodynamics",
+      "payload": {
+        "leg_id": "nw_luzon_drop_zone->clark_field",
+        "fuel_quantity": 8.357142857142858
+      }
+    }
+  ],
+  "metrics": {
+    "total_duration": 5080.0,
+    "total_costs": 0.0,
+    "messages_sent": 0,
+    "messages_delivered": 0,
+    "messages_failed": 0,
+    "mean_delivery_time": 0.0,
+    "chain_completion_times": {
+      "auth_chain_hadr_luzon": 28.0
+    }
+  }
+}

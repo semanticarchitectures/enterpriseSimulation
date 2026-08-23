@@ -1,0 +1,25 @@
+# Timeline
+event_type,timestamp,source_module,payload
+gate_completion,6.0,authorization,"{""gate_name"": ""pacom_title10_hadr"", ""chain_id"": ""auth_chain_hadr_luzon""}"
+gate_completion,16.0,authorization,"{""gate_name"": ""philippine_overflight_clearance"", ""chain_id"": ""auth_chain_hadr_luzon""}"
+gate_completion,20.0,authorization,"{""gate_name"": ""indopacom_hadr_execute_order"", ""chain_id"": ""auth_chain_hadr_luzon""}"
+gate_completion,28.0,authorization,"{""gate_name"": ""navy_coastguard_sar_coordination"", ""chain_id"": ""auth_chain_hadr_luzon""}"
+chain_completion,28.0,authorization,"{""chain_id"": ""auth_chain_hadr_luzon"", ""elapsed_time"": 28.0}"
+fuel_consumed,900.0,aerodynamics,"{""leg_id"": ""hickam_afb->pacific_refuel_alpha"", ""fuel_quantity"": 41.785714285714285}"
+fuel_consumed,2100.0,aerodynamics,"{""leg_id"": ""pacific_refuel_alpha->wake_island_waypoint"", ""fuel_quantity"": 55.714285714285715}"
+fuel_consumed,3500.0,aerodynamics,"{""leg_id"": ""wake_island_waypoint->andersen_afb_guam"", ""fuel_quantity"": 65.0}"
+fuel_consumed,4600.0,aerodynamics,"{""leg_id"": ""andersen_afb_guam->philippine_sea_transit"", ""fuel_quantity"": 51.07142857142857}"
+fuel_consumed,4900.0,aerodynamics,"{""leg_id"": ""philippine_sea_transit->nw_luzon_drop_zone"", ""fuel_quantity"": 13.928571428571429}"
+extraction_start,4908.0,airdrop,"{""drop_zone_id"": ""nw_luzon_drop_zone""}"
+extraction_complete,4923.0,airdrop,"{""drop_zone_id"": ""nw_luzon_drop_zone"", ""cargo_manifest"": [""pallet_water_001"", ""pallet_food_001"", ""pallet_medical_001"", ""pallet_shelter_001"", ""pallet_comms_001""]}"
+fuel_consumed,5080.0,aerodynamics,"{""leg_id"": ""nw_luzon_drop_zone->clark_field"", ""fuel_quantity"": 8.357142857142858}"
+
+# Metrics
+metric,value
+total_duration,5080.0
+total_costs,0.0
+messages_sent,0
+messages_delivered,0
+messages_failed,0
+mean_delivery_time,0.0
+chain_completion_times,"{""auth_chain_hadr_luzon"": 28.0}"
