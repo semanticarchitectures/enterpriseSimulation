@@ -302,8 +302,8 @@ class PersonnelModule(DomainModule):
             )
             processes.append(proc)
 
-        # Create message queue delivery process
-        processes.append(env.process(self._message_queue_process(env)))
+        # Note: message queue delivery is handled synchronously in
+        # change_readiness() — no separate polling process needed.
 
         return processes
 

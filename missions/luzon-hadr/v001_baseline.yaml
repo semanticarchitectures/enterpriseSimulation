@@ -225,6 +225,128 @@ airdrop_parameters:
       weight: 800.0
       description: "Portable communications relay equipment"
 
+# Personnel: C-130J aircrew (5) and ground support (4) for the HADR mission
+# Aircrew: Pilot, Copilot, Navigator, Loadmaster, Flight Engineer
+# Ground: AOC Commander (Hickam), Ground Coordinator (Clark), DZ Controller (Luzon DZ), Liaison (Guam)
+personnel_parameters:
+  roster:
+    # === Aircrew ===
+    - entity_id: "pers_pilot"
+      name: "MAJ Torres"
+      role: "Pilot"
+      duty_station: "hickam_afb"
+      credential:
+        credential_type: "CAC_PKI"
+        clearance_level: 2  # TOP_SECRET
+        authorized_enclaves: ["SIPRNET", "CENTRIXS_PACIFIC"]
+      readiness_state: "READY"
+    - entity_id: "pers_copilot"
+      name: "CPT Reyes"
+      role: "Pilot"
+      duty_station: "hickam_afb"
+      credential:
+        credential_type: "CAC_PKI"
+        clearance_level: 1  # SECRET
+        authorized_enclaves: ["SIPRNET"]
+      readiness_state: "READY"
+    - entity_id: "pers_navigator"
+      name: "1LT Nakamura"
+      role: "Navigator"
+      duty_station: "hickam_afb"
+      credential:
+        credential_type: "CAC_PKI"
+        clearance_level: 1  # SECRET
+        authorized_enclaves: ["SIPRNET"]
+      readiness_state: "READY"
+    - entity_id: "pers_loadmaster"
+      name: "TSGT Patterson"
+      role: "Loadmaster"
+      duty_station: "nw_luzon_drop_zone"
+      credential:
+        credential_type: "CAC_PKI"
+        clearance_level: 1  # SECRET
+        authorized_enclaves: ["SIPRNET"]
+      readiness_state: "READY"
+    - entity_id: "pers_flight_eng"
+      name: "SSGT Kim"
+      role: "Engineer"
+      duty_station: "hickam_afb"
+      credential:
+        credential_type: "CAC_PKI"
+        clearance_level: 1  # SECRET
+        authorized_enclaves: ["SIPRNET"]
+      readiness_state: "READY"
+    # === Ground Support ===
+    - entity_id: "pers_aoc_cmd"
+      name: "COL Blackwell"
+      role: "AOC_Commander"
+      duty_station: "hickam_afb"
+      credential:
+        credential_type: "CAC_PKI"
+        clearance_level: 2  # TOP_SECRET
+        authorized_enclaves: ["SIPRNET", "CENTRIXS_PACIFIC"]
+      readiness_state: "READY"
+    - entity_id: "pers_ground_coord"
+      name: "MAJ Santos"
+      role: "AOC_Commander"
+      duty_station: "clark_field"
+      credential:
+        credential_type: "CAC_PKI"
+        clearance_level: 1  # SECRET
+        authorized_enclaves: ["SIPRNET", "CENTRIXS_PACIFIC"]
+      readiness_state: "READY"
+    - entity_id: "pers_dz_controller"
+      name: "SFC Dela Cruz"
+      role: "Navigator"
+      duty_station: "nw_luzon_drop_zone"
+      credential:
+        credential_type: "CAC_PKI"
+        clearance_level: 1  # SECRET
+        authorized_enclaves: ["CENTRIXS_PACIFIC"]
+      readiness_state: "READY"
+    - entity_id: "pers_liaison"
+      name: "LCDR Watanabe"
+      role: "Navigator"
+      duty_station: "andersen_afb_guam"
+      credential:
+        credential_type: "CAC_PKI"
+        clearance_level: 1  # SECRET
+        authorized_enclaves: ["SIPRNET", "CENTRIXS_PACIFIC"]
+      readiness_state: "READY"
+
+  # Message routing: who handles each C2 message type at destination
+  message_routing_rules:
+    - message_type: "TASKORD_HADR"
+      destination_role: "AOC_Commander"
+    - message_type: "AIRMOVE_PACIFIC"
+      destination_role: "Navigator"
+    - message_type: "SAR_COORDINATION_ALERT"
+      destination_role: "Navigator"
+    - message_type: "DROP_ZONE_COORDINATE_UPDATE"
+      destination_role: "Navigator"
+    - message_type: "OPREP3_MISSION_COMPLETE"
+      destination_role: "AOC_Commander"
+
+  # Authorization gate bindings: who approves each gate
+  authorization_gate_bindings:
+    - gate_name: "pacom_title10_hadr"
+      approving_role: "AOC_Commander"
+    - gate_name: "indopacom_hadr_execute_order"
+      approving_role: "AOC_Commander"
+
+  # Decision points: human-in-the-loop decisions that gate mission flow
+  decision_points:
+    - decision_id: "loadmaster_cargo_release"
+      assigned_role: "Loadmaster"
+      decision_type: "APPROVE_DENY"
+      deliberation_duration: 3.0
+      timeout: 30.0
+    - decision_id: "pilot_go_nogo_departure"
+      assigned_role: "Pilot"
+      decision_type: "GO_NO_GO"
+      deliberation_duration: 5.0
+      timeout: 60.0
+
 active_modules:
   - "authorization"
   - "fiscal"
@@ -232,3 +354,4 @@ active_modules:
   - "cross_domain"
   - "aerodynamics"
   - "airdrop"
+  - "personnel"
